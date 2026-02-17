@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func ReadFile(fPath string) (data [3]float64, err error) {
+func ReadFile(fPath string) (data []float64, err error) {
 	// Открываем файл с данными
 	file, err := os.Open(fPath)
 	// Проверка на ошибки открытия файла
@@ -17,11 +17,17 @@ func ReadFile(fPath string) (data [3]float64, err error) {
 	// Создаем новый сканер для file
 	scan := bufio.NewScanner(file)
 	// Считываем данные с файла
-	for i := 0; scan.Scan(); i++ {
-		// Загоняет данные в массив и преобразует строки в float64
-		data[i], err = strconv.ParseFloat(scan.Text(), 64)
+	for scan.Scan() {
+		// Полученные данные сохраняет в временную переменную
+		number, err := strconv.ParseFloat(scan.Text(), 64)
+		// Проверка на оишбки при заполнении
+		if err != nil {
+			return data, err
+		}
+		// Добавляет к сегменту новые данные
+		data = append(data, number)
 	}
-	// Проверка на оишбки при сканировании
+	// Проверка на ошибки при сканировании
 	if scan.Err() != nil {
 		return data, scan.Err()
 	}
