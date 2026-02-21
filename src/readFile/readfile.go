@@ -1,12 +1,13 @@
-// Данная программа считывает данные из файла
 package readfile
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
+// Данная функция считывает данные из файла
 func ReadFile(fPath string) (data []float64, err error) {
 	// Открываем файл с данными
 	file, err := os.Open(fPath)
@@ -36,5 +37,15 @@ func ReadFile(fPath string) (data []float64, err error) {
 	if err != nil {
 		return data, err
 	}
+	// Чтение файла целиком и вывод содержимого на экран
+	content, err := os.ReadFile(fPath)
+	if err != nil {
+		fmt.Println("Ошибка чтения:", err)
+	}
+	// Преобразование байтов в строку
+	text := string(content)
+	// Вывод содержимого на экран
+	fmt.Println("Содержимое файла:")
+	fmt.Println(text)
 	return data, nil
 }
